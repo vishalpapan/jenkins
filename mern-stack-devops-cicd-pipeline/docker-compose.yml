@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:6.0
+    container_name: task-manager-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: taskmanager
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - task-manager-network
+
+  app:
+    build: .
+    container_name: task-manager-app
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV: production
+      MONGODB_URI: mongodb://mongodb:27017/taskmanager
+      JWT_SECRET: your-super-secret-jwt-key-change-in-production
+    depends_on:
+      - mongodb
+    networks:
+      - task-manager-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  task-manager-network:
+    driver: bridge
