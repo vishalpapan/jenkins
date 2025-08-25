@@ -40,6 +40,7 @@ pipeline {
     }
     
     stage('Update Deployment File') {
+        agent any
         environment {
             GIT_REPO_NAME = "jenkins"
             GIT_USER_NAME = "vishalpapan"
