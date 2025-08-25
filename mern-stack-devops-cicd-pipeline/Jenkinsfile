@@ -44,15 +44,14 @@ pipeline {
             GIT_REPO_NAME = "jenkins"
             GIT_USER_NAME = "vishalpapan"
         }
-         steps {
+        steps {
             withCredentials([usernamePassword(credentialsId: 'github', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
                 sh '''
-                    cd mern-stack-devops-cicd-pipeline
                     git config user.email "vishal.papan@gmail.com"
                     git config user.name "Vishal Papan"
                     BUILD_NUMBER=${BUILD_NUMBER}
-                    sed -i "s|image: .*|image: vishalpapan/task-manager-app:${BUILD_NUMBER}|g" k8s/deployment.yaml
-                    git add k8s/deployment.yaml
+                    sed -i "s|image: .*|image: vishalpapan/task-manager-app:${BUILD_NUMBER}|g" mern-stack-devops-cicd-pipeline/k8s/deployment.yaml
+                    git add mern-stack-devops-cicd-pipeline/k8s/deployment.yaml
                     git commit -m "Update deployment image to version ${BUILD_NUMBER}"
                     git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
                 '''
