@@ -12,7 +12,7 @@ FROM node:18-alpine AS backend
 
 WORKDIR /app
 COPY backend/package*.json ./
-RUN npm ci --only=production
+RUN npm install --only=production
 
 COPY backend/ ./
 COPY --from=frontend-build /app/frontend/build ./public
