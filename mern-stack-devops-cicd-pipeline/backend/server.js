@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const path = require('path');
 require('dotenv').config();
 
 const authRoutes = require('./routes/auth');
@@ -52,6 +53,14 @@ app.get('/health', (req, res) => {
   });
 });
 
+// Serve static files from React build
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Serve React app for all non-API routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
@@ -61,18 +70,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Serve static files from React build
-app.use(express.static(path.join(__dirname, 'public')));
 
-// Serve React app for all non-API routes
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-// 404 handler
-app.use('*', (req, res) => {
-  res.status(404).json({ message: 'Route not found' });
-});
 
 const PORT = process.env.PORT || 5000;
 
@@ -83,6 +81,5 @@ if (require.main === module) {
     });
   });
 }
-
 
 module.exports = app;
