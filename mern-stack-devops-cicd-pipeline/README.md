@@ -2,6 +2,9 @@
 
 A full-stack MERN application designed for practicing DevOps CI/CD pipelines with Jenkins, Docker, and ArgoCD.
 
+<img width="1916" height="951" alt="image" src="https://github.com/user-attachments/assets/7488b726-bb35-4f3a-9691-07dffd4f4286" />
+
+
 ## Features
 
 - **Frontend**: React.js with modern UI
