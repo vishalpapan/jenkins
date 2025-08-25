@@ -17,6 +17,7 @@ pipeline {
     stage('Build and Test') {
       steps {
         sh 'ls -ltr'
+        sh 'cd mern-stack-devops-cicd-pipeline && ls -ltr'
         sh 'apk add --no-cache docker-cli curl git'
         sh 'npm --version && docker --version'
       }
@@ -29,7 +30,7 @@ pipeline {
       }
       steps {
         script {
-            sh 'docker build -t ${DOCKER_IMAGE} .'
+            sh 'cd mern-stack-devops-cicd-pipeline && docker build -t ${DOCKER_IMAGE} .'
             def dockerImage = docker.image("${DOCKER_IMAGE}")
             docker.withRegistry('https://index.docker.io/v1/', "docker-cred") {
                 dockerImage.push()
@@ -46,6 +47,7 @@ pipeline {
         steps {
             withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
                 sh '''
+                    cd mern-stack-devops-cicd-pipeline
                     git config user.email "vishal.papan@gmail.com"
                     git config user.name "Vishal Papan"
                     BUILD_NUMBER=${BUILD_NUMBER}
